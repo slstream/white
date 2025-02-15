@@ -1,0 +1,349 @@
+//SQL light
+activity main code :
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/nameID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="NAME:"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.102" />
+
+    <EditText
+        android:id="@+id/ageID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="AGE:"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.185" />
+
+    <Button
+        android:id="@+id/submitID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.241"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.36" />
+
+    <Button
+        android:id="@+id/viewID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.475" />
+
+    <Button
+        android:id="@+id/updateID"
+        android:layout_width="103dp"
+        android:layout_height="49dp"
+        android:text="update"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.565" />
+
+    <Button
+        android:id="@+id/deleteID"
+        android:layout_width="107dp"
+        android:layout_height="42dp"
+        android:text="delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.723"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.365" />
+
+    <EditText
+        android:id="@+id/valueID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="ID :"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
+
+    <CheckBox
+        android:id="@+id/checkID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="confirm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.269" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+mainactivity.java code :
+package com.example.my_application;
+
+import android.annotation.SuppressLint;
+import android.database.Cursor;
+import android.database.CursorWrapper;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.viewmodel.CreationExtras;
+
+public class MainActivity extends AppCompatActivity {
+     EditText nameID,ageID ,valueID;
+     Button submitID,viewID,updateID,deleteID;
+
+     CheckBox checkID;
+     DataBaseHelper10 db;
+    @SuppressLint("MissingInflatedId")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+       db = new DataBaseHelper10(this);
+        nameID = (EditText) findViewById(R.id.nameID);
+        ageID = (EditText) findViewById(R.id.ageID);
+        valueID = (EditText) findViewById(R.id.valueID);
+        submitID = (Button) findViewById(R.id.submitID);
+        viewID = (Button) findViewById(R.id.viewID);
+        updateID = (Button) findViewById(R.id.updateID);
+        deleteID = (Button) findViewById(R.id.deleteID);
+        checkID =(CheckBox)findViewById(R.id.checkID);
+
+        submitID.setOnClickListener( v ->{});
+        if(checkID.isChecked()) {
+            boolean inserted = db.insertData(nameID.getText().toString(), ageID.getText().toString(), true);
+            Toast.makeText(this, inserted ? "insert success" : "insert failure", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, "press the tick ", Toast.LENGTH_SHORT).show();
+        }
+        viewID.setOnClickListener( v ->{
+            Cursor cursor = db.getData();
+            ShowMessage("data", "not found");
+        });
+
+       
+
+    }
+
+    private void ShowMessage(String title, String message) {
+        new AlertDialog.Builder(this)
+                .setTitle(title).setMessage(message).setCancelable(true).show();
+    }
+}
+
+databasehelper.java code:
+package com.example.my_application;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class DataBaseHelper10 extends SQLiteOpenHelper {
+
+    private final static String DATABASE_NAME = "apple.db";
+    private final static String TABLE_NAME = "apple";
+    private final static String COL_1 = "ID";
+    private final static String COL_2 = "NAME";
+    private final static String COL_3 = "AGE";
+    private final static String COL_4 = "CHECKBOX";
+
+    public DataBaseHelper10(Context context) {
+        super(context, DATABASE_NAME, null, 1);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, AGE INTEGER, CHECKBOX INTEGER)");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        onCreate(db);
+    }
+
+    public boolean insertData(String name, String age, boolean isChecked) {
+        if (!isChecked) return false;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_2, name);
+        values.put(COL_3, age);
+        values.put(COL_4, 1);
+        long result = db.insert(TABLE_NAME, null, values);
+        return result != -1;
+    }
+
+    public Cursor getData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+    }
+
+   
+}
+
+flutter///
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
+void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+        apiKey: "AIzaSyBKrpFxkfb3RQEX6N8FDZWlM57SgqsOb8Q",
+        appId:  "1:86584964542:android:d14482e35725b8ea5c75ef",
+        messagingSenderId: "",
+        projectId: "test9-c11fa"
+    ),
+  );
+  runApp(MaterialApp(
+    home: Home() ,
+  ));
+}
+class Home extends StatefulWidget {
+  const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController ageController = TextEditingController();
+
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+  void submitdata()async{
+    String name= nameController.text;
+    int age = int.parse(ageController.text);
+
+    if(name.isNotEmpty && age>0){
+      await db.collection("test9").add({
+        'name' : name,
+        'age' : age
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+
+          SnackBar(content: Text("Recorded")));
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Not Recorded")));
+    }
+
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Firebase"),
+        centerTitle: true,
+        backgroundColor: Colors.yellow,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+               Expanded(
+                 child: Container(
+                   child: Image.asset('ab.jpg'),
+                 ),
+               ),
+            TextField(
+              controller: nameController,
+              decoration: InputDecoration(
+                label: Text("Name")
+              ),
+            ),
+            TextField(
+              controller: ageController,
+              keyboardType: TextInputType.numberWithOptions(),
+              decoration: InputDecoration(
+                  label: Text("Age")
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(onPressed: submitdata,
+                child: Text("Submit")),
+            Expanded(
+                child:StreamBuilder(
+                    stream: db.collection("test9").snapshots(),
+                    builder: (context,snapshot)
+                    {
+                      if(!snapshot.hasData){
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context,index)
+                          {
+                            var doc = snapshot.data!.docs[index];
+                            var id = doc.id;
+                            var name=doc["name"];
+                            var age=doc["age"];
+                            return ListTile(
+                              title: Text("$name"),
+                              subtitle: Text("$age"),
+                            );
+                           }
+                      );
+                    }
+                )
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
